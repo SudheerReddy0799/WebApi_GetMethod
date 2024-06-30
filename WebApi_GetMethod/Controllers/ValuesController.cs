@@ -13,17 +13,25 @@ namespace WebApi_GetMethod.Controllers
     {
         // GET api/values
          EmpEntities1 dbcontext=new EmpEntities1();
-        public IEnumerable<emp> GetEmployees()
+        public HttpResponseMessage Get()
         {
             IEnumerable<emp> employees = dbcontext.emps.ToList();
-            return employees;
+            return Request.CreateResponse(HttpStatusCode.OK, employees);
         }
 
         // GET api/values/5
-        public emp  Get(int id)
+        public HttpResponseMessage  Get(int id)
         {
             emp emp=dbcontext.emps.Where(x => x.EmpID == id).FirstOrDefault();
-            return emp;
+            if(emp!=null)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK,emp);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound,"Employee id with" + id.ToString()+"Not found");
+            }
+           
         }
 
         // POST api/values
